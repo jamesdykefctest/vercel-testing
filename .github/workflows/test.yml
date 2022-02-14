@@ -7,7 +7,7 @@ on:
 jobs:
   wait_for_vercel:
     run: sleep 30
-  - name: vercel-preview-url
+    name: vercel-preview-url
     uses: zentered/vercel-preview-url@v1.0.0
     id: vercel_preview_url
     env:
@@ -15,8 +15,8 @@ jobs:
     with:
       vercel_team_id: 'opstrace'
       vercel_project_id: 'opstrace.com'
-  - name: Get URL
-    run: echo "https://${{ steps.vercel_preview_url.outputs.preview_url }}"
+  name: Get URL
+  run: echo "https://${{ steps.vercel_preview_url.outputs.preview_url }}"
   test:
     timeout-minutes: 60
     needs: wait_for_vercel
