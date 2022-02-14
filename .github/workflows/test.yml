@@ -1,0 +1,40 @@
+name: Playwright Tests
+on:
+  push:
+    branches: [main, master]
+  pull_request:
+    branches: [main, master]
+jobs:
+  wait_for_vercel:
+    run: sleep 30
+  - name: vercel-preview-url
+    uses: zentered/vercel-preview-url@v1.0.0
+    id: vercel_preview_url
+    env:
+      VERCEL_TOKEN: ${{ secrets.VERCEL_TOKEN }}
+    with:
+      vercel_team_id: 'opstrace'
+      vercel_project_id: 'opstrace.com'
+  - name: Get URL
+    run: echo "https://${{ steps.vercel_preview_url.outputs.preview_url }}"
+  test:
+    timeout-minutes: 60
+    needs: wait_for_vercel
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v2
+      - uses: actions/setup-node@v2
+        with:
+          node-version: "14.x"
+      - name: Install dependencies
+        run: npm install
+      - name: Install Playwright
+        run: npx playwright install --with-deps
+      - name: Run Playwright tests
+        run: npx playwright test
+      - uses: actions/upload-artifact@v2
+        if: always()
+        with:
+          name: playwright-report
+          path: playwright-report/
+          retention-days: 30
