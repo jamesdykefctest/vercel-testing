@@ -6,6 +6,6 @@ test.describe("Browse bounties", () => {
   });
 
   test("should show a list of drops", async ({ page }) => {
-    await expect(page.locator("data-test-id=dyke")).toBeTruthy();
+    await expect(page.locator("data-test-id=dykes")).toBeTruthy();
   });
 });
