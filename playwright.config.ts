@@ -1,9 +1,7 @@
-// playwright.config.js
-// @ts-check
-const { devices } = require('@playwright/test');
+// playwright.config.ts
+import { PlaywrightTestConfig, devices } from '@playwright/test';
 
-/** @type {import('@playwright/test').PlaywrightTestConfig} */
-const config = {
+const config: PlaywrightTestConfig = {
   forbidOnly: !!process.env.CI,
   retries: process.env.CI ? 2 : 0,
   use: {
@@ -24,5 +22,4 @@ const config = {
     },
   ],
 };
-
-module.exports = config;
+export default config;
