@@ -5,21 +5,22 @@ on:
   pull_request:
     branches: [main, master]
 jobs:
-  wait_for_vercel:
-    name: Wait for vercel
-    runs-on: ubuntu-latest
-    outputs:
-      preview_url: ${{ steps.waitForVercelPreviewDeployment.outputs.url }}
+  wait-for-vercel-deployment:
+    runs-on: ubuntu-18.04
     steps:
-      - name: Wait for Vercel preview deployment to be ready
-        uses: patrickedqvist/wait-for-vercel-preview@main
-        id: waitForVercelPreviewDeployment
+      - uses: UnlyEd/github-action-await-vercel@v1.2.14
+        id: await-vercel
+        env:
+          VERCEL_TOKEN: ${{ secrets.VERCEL_TOKEN }}
         with:
-          token: ${{ secrets.GITHUB_TOKEN }}
-          max_timeout: 120
+          deployment-url: nextjs-bzyss249z.vercel.app # TODO Replace by the domain you want to test
+          timeout: 10 # Wait for 10 seconds before failing
+
+      - name: Display deployment status
+        run: "echo The deployment at ${{ fromJson(steps.await-vercel.outputs.deploymentDetails).url }} is ${{ fromJson(steps.await-vercel.outputs.deploymentDetails).readyState }}"
   test:
     timeout-minutes: 60
-    needs: wait_for_vercel
+    needs: wait-for-vercel-deployment
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v2
@@ -32,9 +33,6 @@ jobs:
         run: npx playwright install --with-deps
       - name: Run Playwright tests
         run: npx playwright test
-        env:
-          VERCEL_URL: ${{ needs.wait_for_vercel.outputs.preview_url }}
-          VERCEL_ENV: preview
       - uses: actions/upload-artifact@v2
         if: always()
         with:
