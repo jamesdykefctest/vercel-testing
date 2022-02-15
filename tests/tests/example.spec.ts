@@ -10,3 +10,4 @@ test.describe("Main page", () => {
     await expect(title).toHaveText('Just testing');
   });
 });
+
