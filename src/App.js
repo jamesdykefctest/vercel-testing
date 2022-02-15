@@ -4,9 +4,7 @@ function App() {
   return (
     <div className="App" data-test-id="dyke">
       <header className="App-header">
-        <p className="title">
-          Just testing
-        </p>
+        <p className="title">testing</p>
         <a
           className="App-link"
           href="https://playwright.dev/docs/intro#first-test"
