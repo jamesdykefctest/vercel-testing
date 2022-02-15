@@ -7,6 +7,6 @@ test.describe("Main page", () => {
 
   test("Check title", async ({ page }) => {
     const title = page.locator('.title');
-    await expect(title).toHaveText('Just tt');
+    await expect(title).toHaveText('Just testing');
   });
 });
