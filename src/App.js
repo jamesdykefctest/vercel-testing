@@ -5,7 +5,7 @@ function App() {
     <div className="App" data-test-id="dyke">
       <header className="App-header">
         <p className="title">
-          Just testing
+          Just testing example
         </p>
         <a
           className="App-link"
