@@ -6,7 +6,7 @@ on:
     branches: [main, master]
 jobs:
   wait-for-vercel-deployment:
-    - run: sleep 30
+      run: sleep 30
     - name: vercel-preview-url
       uses: zentered/vercel-preview-url@v1.0.0
       id: vercel_preview_url
