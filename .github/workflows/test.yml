@@ -6,17 +6,18 @@ on:
     branches: [main, master]
 jobs:
   wait-for-vercel-deployment:
-      run: sleep 30
-    - name: vercel-preview-url
-      uses: zentered/vercel-preview-url@v1.0.0
-      id: vercel_preview_url
-      env:
-        VERCEL_TOKEN: ${{ secrets.VERCEL_TOKEN }}
-      with:
-        vercel_team_id: 'opstrace'
-        vercel_project_id: 'opstrace.com'
-    - name: Get URL
-      run: echo "https://${{ steps.vercel_preview_url.outputs.preview_url }}"
+    runs-on: ubuntu-18.04
+    steps:
+      - uses: UnlyEd/github-action-await-vercel@v1.2.14
+        id: await-vercel
+        env:
+          VERCEL_TOKEN: ${{ secrets.VERCEL_TOKEN }}
+        with:
+          deployment-url: nextjs-bzyss249z.vercel.app # TODO Replace by the domain you want to test
+          timeout: 10 # Wait for 10 seconds before failing
+
+      - name: Display deployment status
+        run: "echo The deployment at ${{ fromJson(steps.await-vercel.outputs.deploymentDetails).url }} is ${{ fromJson(steps.await-vercel.outputs.deploymentDetails).readyState }}"
   test:
     timeout-minutes: 60
     needs: wait-for-vercel-deployment
