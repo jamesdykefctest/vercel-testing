@@ -24,7 +24,7 @@ jobs:
         env:
           VERCEL_TOKEN: ${{ secrets.VERCEL_TOKEN }}
         with:
-          deployment-url: ${{ steps.<step_id>.outputs.vercel_preview_url }} #vercel-testing-topaz.vercel.app # TODO Replace by the domain you want to test
+          deployment-url:  ${{ steps.vercel_preview_url.outputs.vercel_preview_url }} #vercel-testing-topaz.vercel.app # TODO Replace by the domain you want to test
           timeout: 10 # Wait for 10 seconds before failing
       - name: Display deployment status
         run: "echo The deployment at ${{ fromJson(steps.await-vercel.outputs.deploymentDetails).url }} is ${{ fromJson(steps.await-vercel.outputs.deploymentDetails).readyState }}"
